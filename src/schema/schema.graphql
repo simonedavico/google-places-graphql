@@ -1,0 +1,47 @@
+scalar PositiveInt
+scalar URL
+
+type Location {
+  lat: Float!
+  lng: Float!
+}
+
+type Review {
+  authorName: String
+  rating: PositiveInt
+  text: String
+}
+
+enum ServiceType {
+  ATM
+  CURRENCY_EXCHANGE
+  MONEY_TRANSFER
+}
+
+type Place {
+  id: ID
+  name: String
+  location: Location
+  address: String
+  website: URL
+  # for simplicity, we map the weekday_text field
+  openingHours: [String!]
+  isOpen: Boolean
+  rating: PositiveInt
+  reviews: [Review!]
+}
+
+input LocationInput {
+  lat: Float!
+  lng: Float!
+}
+
+type Query {
+  placeById(id: ID!): Place
+
+  findNearbyPlaces(
+    location: LocationInput
+    maxDistance: PositiveInt
+    serviceTypes: [ServiceType]
+  ): [Place]
+}
